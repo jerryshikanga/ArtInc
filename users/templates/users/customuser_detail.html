@@ -1,0 +1,122 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        {{customuser.user.username}}
+        <small>User Details</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Users</a></li>
+        <li class="active">Details</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+            {% if request.user.id == customuser.user.id %}
+            <div class="box-header">
+              <span class="row"><button class="btn btn-primary" onclick="loadEditForm({{product.id}})" data-toggle="modal" data-target="#modal-default"> Edit User </button></span>
+            </div>
+            {% endif %}
+            <!-- /.box-header -->
+            <div class="box-body">
+              <ul class="list-group">
+                <li class="list-group-item"><span>Name</span> : {{customuser.user.first_name}} {{object.user.last_name}}</li>
+                <li class="list-group-item"> Email : {{customuser.user.email}}</li>
+                <li class="list-group-item">Telephone : {{customuser.telephone}}</li>
+                <li class="list-group-item">Website : {{customuser.website}}</li>
+                <li class="list-group-item">Last Login : {{customuser.user.last_login}}</li>
+                <li class="list-group-item">Date Joined : {{customuser.user.date_joined}}</li>
+                <li class="list-group-item">
+                  {% if customuser.picture %}
+                  <img height="250px" src="{% static '/media/' %}{{object.picture}}" class="user-image" alt="User Image">
+                {% else %}
+                  <img height="250px" src="{% static '/media/images/male_ico.jpg' %}" class="user-image" alt="User Image">
+                {% endif %}</li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.1
+    </div>
+    <strong>Copyright &copy; 2018 <a href="https://jerryshikanga.github.io">Jerry Shikanga</a>.</strong> All rights
+    reserved.
+  </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- jQuery 3 -->
+<script src="{% static '/home/' %}bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static '/home/' %}bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="{% static '/home/' %}bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="{% static '/home/' %}bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="{% static '/home/' %}dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static '/home/' %}dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+
+function loadEditForm(id) {
+  $('.modal-title').html("Update profile {{object.user.username}}");
+  $.ajax({
+    url : "{% url 'users:edit' object.id %}",
+    method : 'GET',
+    success : function(result){
+      $('.modal-body').html(result);
+    },
+    error : function (error, code) {
+      $('.modal-body').html(error);
+    }
+  });
+}
+
+</script>
+{% endblock %}

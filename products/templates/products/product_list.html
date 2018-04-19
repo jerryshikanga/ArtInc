@@ -1,0 +1,215 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Products List
+        <small>List of Products</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li class="active">All</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title" style="padding-bottom:15px">
+                {% if key is not None %} Keyword : {{key}} {% endif %}
+                {% if category is not None %} Category : {{category}} {% endif %}
+              </h3>
+              <span class="row">
+                {% if request.user.is_superuser %}
+                  <button class="btn btn-primary" onclick="loadAddForm()" data-toggle="modal" data-target="#modal-default"> Add Product </button>
+                  <button class="btn btn-primary" onclick="loadCategoryForm()" data-toggle="modal" data-target="#modal-default"> Add Category </button>
+                {% endif %}
+              </span>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th> Name </th>
+                    <th> Category </th>
+                    <th> Price </th>
+                    <th> Bids </th>
+                    <th> Max Bid </th>
+                    <th> Actions </th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for product in object_list %}
+                  <tr>
+                    <td> {{product.name}} </td>
+                    <td> {{product.category}} </td>
+                    <td> {{product.price}} </td>
+                    <td> {{product.bid__count}} </td>
+                    <td> {{product.bid__amount__max}} </td>
+                    <td>
+                      <a href="{% url 'products:detail' product.id %}" > View |</a>
+                      <a data-target="#modal-default" id="edit_button" data-toggle="modal" onclick="loadEditForm({{product.id}})" > Edit |</a>
+                      <a data-toggle="modal" data-target="#modal-default" id="bid_button" onclick="loadBidForm({{product.id}})">Bid | </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th> Name </th>
+                  <th> Price </th>
+                  <th> Actions </th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.1
+    </div>
+    <strong>Copyright &copy; 2018 <a href="https://jerryshikanga.github.io">Jerry Shikanga</a>.</strong> All rights
+    reserved.
+  </footer>
+
+</div>
+<!-- ./wrapper -->
+
+        <div class="modal fade" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Product Modal</h4>
+              </div>
+              <div class="modal-body">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline">Save changes</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+<!-- jQuery 3 -->
+<script src="{% static '/home/' %}bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static '/home/' %}bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="{% static '/home/' %}bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="{% static '/home/' %}bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="{% static '/home/' %}bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="{% static '/home/' %}bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="{% static '/home/' %}dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static '/home/' %}dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $('#example1').DataTable();
+  })
+
+</script>
+<script>
+function loadBidForm(id) {
+  $('.modal-title').html("Bid on Product");
+  $.ajax(
+    {
+      type:'GET',
+      url: '/bids/bid/'+id+'/',
+      success : function (result) {
+        $('.modal-body').html(result);
+      },
+      timeout : function () {
+        $('.modal-body').html("Request timed out.");
+      },
+      error : function (xhr,status,error){
+        $('.modal-body').html(error);
+      }
+    }
+  );
+};
+
+function  loadEditForm(id) {
+  $('.modal-title').html("Edit Product");
+  $.ajax({
+    type:'GET',
+    url:'/products/edit/'+id+'/',
+    success : function (result) {
+      $('.modal-body').html(result);
+    },
+    timeout : function () {
+      $('.modal-body').html("Request timed out.");
+    },
+    error : function (xhr,status,error){
+      $('.modal-body').html(error);
+    }
+  });
+};
+
+function loadAddForm() {
+  $('.modal-title').html("Add Product");
+  $.ajax({
+    type:'GET',
+    url:'{% url 'products:add' %}',
+    success : function (result) {
+      $('.modal-body').html(result);
+    },
+    timeout : function () {
+      $('.modal-body').html("Request timed out.");
+    },
+    error : function (xhr,status,error){
+      $('.modal-body').html(error);
+    }
+  });
+};
+
+function loadCategoryForm() {
+  $('.modal-title').html("Add Category");
+  $.ajax({
+    type:'GET',
+    url:"{% url 'categories:add' %}",
+    success : function (result) {
+      $('.modal-body').html(result);
+    },
+    timeout : function () {
+      $('.modal-body').html("Request timed out.");
+    },
+    error : function (xhr,status,error){
+      $('.modal-body').html(error);
+    }
+  });
+}
+</script>
+{% endblock %}

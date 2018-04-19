@@ -1,0 +1,20 @@
+<h3> Login </h3>
+{% if message is not None %}
+  <p> {{message}} </p>
+{% endif %}
+
+<form action="{% url 'users:login' %}?next={{request.GET.next}}" method="post">
+  <input type='hidden' name='csrfmiddlewaretoken' value='{{csrf_token}}' />
+  <p>
+    <label for="username">Username </label>
+    <input type="text" name="username" id="username">
+  </p>
+  <p>
+    <label for="password"> Password </label>
+    <input type="password" name="password" id="password">
+  </p>
+  <p>
+    <input type="submit" value="Login">
+    <input type="reset" value="reset">
+  </p>
+</form>

@@ -1,0 +1,18 @@
+<h3> List Of Users </h3>
+
+<table>
+  <tr>
+    <th> Name </th>
+    <th> Email </th>
+    <th> Last Login <th>
+    <th> Website <th>
+  </tr>
+  {% for userProfile in object_list %}
+  <tr>
+    <td> {{userProfile.user.first_name}} {{userProfile.user.last_name}}</td>
+    <td> {{userProfile.user.email}} </td>
+    <td> {{userProfile.user.last_login}} </td>
+    <td> <a href="{{userProfile.website}}" target="_blank"> {{userProfile.website}} </a> </td>
+  </tr>
+  {% endfor %}
+</table>

@@ -1,0 +1,15 @@
+<h3>Bids List </h3>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Product</th>
+    <th>Amount</th>
+  </tr>
+  {% for bid in object_list %}
+  <tr>
+    <td>{{bid.date}}</td>
+    <td>{{bid.product.name}}</td>
+    <td>{{bid.amount}}</td>
+  </tr>
+  {% endfor %}
+</table>

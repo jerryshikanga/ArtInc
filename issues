@@ -1,0 +1,42 @@
+python documents/artinc/manage.py runserver
+
+--sorted Anonymous user error on first
+--sorted Login
+--sorted Logout
+--sorted django.contrib.messages.storage.fallback.FallbackStorage object at 0x0618BA50
+--sorted Register
+--sorted 'AnonymousUser' object has no attribute '_meta' on register
+--sorted Withdraw not updating
+--sorted Profile picture and name not displayed when not set in profile
+--sorted Custom  user not in admin site
+--sorted styling for user profile
+--sorted edit user to be Modal\
+--sorted max bid in product list
+--sorted user can only edit product/profile if he or she has permissions over it or is admin
+--sorted Edit product form submit value not picked up
+--sorted styling for user details
+--sorted styling for product details
+--sorted Add product form styling
+--sorted successful bids in product details
+--sorted number of bids and max_bids in product details
+
+Password Reset
+Local Time
+Format time
+
+
+reload pages after submitting modals
+add & edit product not saving images
+
+
+bids logic
+** currently when user bids on a product the amount is deducted from his account automatically. This occurs even when multiple users bid on the same product which is wrong.
+**New Algorithm
+Users bid on a product but their amount is not subtracted
+On every set period intervals or at close of bid the highest bid is selected and the amount subtracted from the users account
+Product is cleared from the products list
+
+
+
+Login permissions message
+Add permissions required mixins/decorators to all views

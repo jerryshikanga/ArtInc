@@ -1,0 +1,29 @@
+{% load static %}
+
+<p>Name : {{product.name}} </p>
+<p> Category : {{product.category}} </p>
+<p> Picture : <img src="{% static '/home/media/' %}{{product.photo}}"/> </p>
+<p>Price : {{product.price}} </p>
+<p>Retailer : {{product.retailer.name}} </p>
+<p>Artiste : {{product.artiste.name}} </p>
+<p>Number of Bids : {{product.bid__count}} </p>
+<p> Maximum Bid : {{product.bid__amount__max}} </p>
+
+<p>
+  <table>
+    <tr>
+      <th>User</th>
+      <th> Amount </th>
+      <th> Date </th>
+    </tr>
+    {% for bid in product.bid %}
+    <tr>
+      <td> {{bid.user}} </td>
+      <td> {{bid.amount}} </td>
+      <td> {{bid.date}} </td>
+    </tr>
+    {% endfor %}
+  </table>
+</p>
+
+<p> <a href="{% url 'bids:newBid' product.id %}"> Bid </a> </p>

@@ -1,0 +1,16 @@
+This is a list of users
+
+<table>
+  <th>
+    <td>Name</td>
+    <td>Email</td>
+    <td>Last Login</td>
+  </th>
+  {% for user in UsersList %}
+  <tr>
+    <td>{{user.first_name}} {{user.last_name}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.last_login}}</td>
+  </tr>
+  {% endfor %}
+</table>

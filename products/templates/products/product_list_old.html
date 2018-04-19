@@ -1,0 +1,30 @@
+<h3> Products List </h3>
+<p>
+   <a href="{% url 'products:addProduct' %}"> <button> Add Product </button> </a>
+</p>
+<p>
+  {% if key is not None %}
+    Products matching : {{key}}
+  {% endif %}
+</p>
+<table>
+  <tr>
+    <th> Name </th>
+    <th> Artiste </th>
+    <th> Retailer </th>
+    <th> Price </th>
+    <th> Actions </th>
+  </tr>
+  {% for product in object_list %}
+  <tr>
+    <td> {{product.name}} </td>
+    <td> {{product.artiste.name}} </td>
+    <td> {{product.retailer.name}} </td>
+    <td> {{product.price}} </td>
+    <td>
+      <a href="{% url 'products:editProduct' product.id %}" > Edit </a>
+      <a href="{% url 'bids:newBid' product.id %}"> Bid </a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
